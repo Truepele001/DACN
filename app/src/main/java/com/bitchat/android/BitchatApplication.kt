@@ -76,6 +76,15 @@ class BitchatApplication : Application() {
         // Proactively start the foreground service to keep mesh alive
         try { com.bitchat.android.service.MeshForegroundService.start(this) } catch (_: Exception) { }
 
-        // TorManager already initialized above
+        // Initialize DACN Identity Manager
+        try { com.bitchat.android.identity.DACNIdentityManager.getInstance(this) } catch (_: Exception) { }
+
+        // Start DACN Dashboard HTTP Server (Port 8080)
+        try { com.bitchat.android.dashboard.DACNDashboardServer.startServer(this) } catch (_: Exception) { }
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        try { com.bitchat.android.dashboard.DACNDashboardServer.stopServer() } catch (_: Exception) { }
     }
 }

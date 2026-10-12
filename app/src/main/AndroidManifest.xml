@@ -125,7 +125,9 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="bitchat" android:host="verify" />
+                <data android:scheme="dacn" />
+                <data android:scheme="bitchat" />
+                <data android:host="verify" />
             </intent-filter>
         </activity>
 
@@ -157,7 +159,7 @@
         <activity
             android:name=".hotspot.HotspotActivity"
             android:exported="false"
-            android:label="Share BitChat"
+            android:label="Share DACN"
             android:theme="@style/Theme.BitchatAndroid"
             android:launchMode="singleTop" />
 
