@@ -29,7 +29,7 @@ This is the Android implementation of bitchat, fully protocol-compatible with th
 
 This project is released into the public domain. See the [LICENSE](LICENSE.md) file for details.
 
-## Features
+### Features
 
 - **Dual Transport Architecture**: Bluetooth LE mesh for offline messaging, Nostr relays for internet-based messaging
 - **Location-Based Channels**: Geographic chat rooms using geohash coordinates over Nostr relays
