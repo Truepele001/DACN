@@ -1,7 +1,7 @@
 package com.bitchat.android.filetransfer
 
 import android.content.Context
-import com.bitchat.android.identity.DACNIdentityManager
+import com.bitchat.android.dacn.identity.DACNIdentityManager
 import org.bouncycastle.crypto.agreement.X25519Agreement
 import org.bouncycastle.crypto.generators.X25519KeyPairGenerator
 import org.bouncycastle.crypto.params.X25519KeyGenerationParameters
@@ -170,7 +170,8 @@ class DACNFileTransferManager(private val context: Context) {
         val encryptedPayload = packagedBytes.copyOfRange(76, packagedBytes.size)
 
         // Derive Key via X25519
-        val privKeyBytes = recipientPrivateKey ?: DACNIdentityManager.getInstance(context).getPrivateKey()
+        DACNIdentityManager.initialize(context)
+        val privKeyBytes = recipientPrivateKey ?: DACNIdentityManager.getPrivateKey()
         val recipientPrivKeyParams = X25519PrivateKeyParameters(ensure32Bytes(privKeyBytes), 0)
         val ephemeralPubKeyParams = X25519PublicKeyParameters(ephemeralPubKeyBytes, 0)
 

@@ -2,7 +2,7 @@ package com.bitchat.android.dashboard
 
 import android.content.Context
 import android.util.Log
-import com.bitchat.android.identity.DACNIdentityManager
+import com.bitchat.android.dacn.identity.DACNIdentityManager
 import com.bitchat.android.service.MeshServiceHolder
 import com.bitchat.android.services.AppStateStore
 import com.bitchat.android.services.meshgraph.MeshGraphService
@@ -78,11 +78,11 @@ class DACNDashboardServer private constructor(
     }
 
     private fun handleIdentityRequest(): Response {
-        val identityManager = DACNIdentityManager.getInstance(context)
+        DACNIdentityManager.initialize(context)
         val identityData = mapOf(
-            "publicKey" to identityManager.getPublicKeyHex(),
-            "peerID" to identityManager.getPeerID(),
-            "displayName" to identityManager.getDisplayName()
+            "publicKey" to DACNIdentityManager.getPublicKeyHex(),
+            "peerID" to DACNIdentityManager.getPeerID(),
+            "displayName" to DACNIdentityManager.getDisplayName()
         )
         return newFixedLengthResponse(
             Response.Status.OK,

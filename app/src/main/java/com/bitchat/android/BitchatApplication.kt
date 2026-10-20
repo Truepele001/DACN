@@ -77,7 +77,7 @@ class BitchatApplication : Application() {
         try { com.bitchat.android.service.MeshForegroundService.start(this) } catch (_: Exception) { }
 
         // Initialize DACN Identity Manager
-        try { com.bitchat.android.identity.DACNIdentityManager.getInstance(this) } catch (_: Exception) { }
+        try { com.bitchat.android.dacn.identity.DACNIdentityManager.initialize(this) } catch (_: Exception) { }
 
         // Start DACN Dashboard HTTP Server (Port 8080)
         try { com.bitchat.android.dashboard.DACNDashboardServer.startServer(this) } catch (_: Exception) { }
