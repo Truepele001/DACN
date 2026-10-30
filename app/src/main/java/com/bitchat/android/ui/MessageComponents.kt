@@ -837,7 +837,7 @@ internal fun TextMessageLayout(
 
         AnnotatedClickableText(
             text = bodyText,
-            annotationTags = listOf("geohash_click", "url_click"),
+            annotationTags = listOf("geohash_click", "url_click", "location_click"),
             onAnnotationClick = { tag, item ->
                 when (tag) {
                     "geohash_click" -> {
@@ -849,6 +849,17 @@ internal fun TextMessageLayout(
                     "url_click" -> {
                         openMessageUrl(context, item)
                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        true
+                    }
+
+                    "location_click" -> {
+                        val parts = item.split(",")
+                        val lat = parts.getOrNull(0)?.toDoubleOrNull()
+                        val lon = parts.getOrNull(1)?.toDoubleOrNull()
+                        if (lat != null && lon != null) {
+                            openLocationInMap(context, lat, lon)
+                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                        }
                         true
                     }
 
@@ -992,7 +1003,7 @@ private fun BubbleTextMessageLayout(
                     ) {
                         AnnotatedClickableText(
                             text = bodyText,
-                            annotationTags = listOf("geohash_click", "url_click"),
+                            annotationTags = listOf("geohash_click", "url_click", "location_click"),
                             onAnnotationClick = { tag, item ->
                                 when (tag) {
                                     "geohash_click" -> {
@@ -1004,6 +1015,17 @@ private fun BubbleTextMessageLayout(
                                     "url_click" -> {
                                         openMessageUrl(context, item)
                                         haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                        true
+                                    }
+
+                                    "location_click" -> {
+                                        val parts = item.split(",")
+                                        val lat = parts.getOrNull(0)?.toDoubleOrNull()
+                                        val lon = parts.getOrNull(1)?.toDoubleOrNull()
+                                        if (lat != null && lon != null) {
+                                            openLocationInMap(context, lat, lon)
+                                            haptic.performHapticFeedback(HapticFeedbackType.TextHandleMove)
+                                        }
                                         true
                                     }
 

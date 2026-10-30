@@ -485,6 +485,15 @@ private fun appendIOSFormattedContent(
         }
     }
 
+    // Add location coordinate matches (e.g. Lat: 37.7749, Lon: -122.4194)
+    val locMatches = MessageSpecialParser.findLocationMatches(content)
+    for (lm in locMatches) {
+        val range = lm.start until lm.endExclusive
+        if (!overlapsMention(range)) {
+            allMatches.add(range to "location:${lm.lat},${lm.lon}")
+        }
+    }
+
     // Remove generic hashtag matches that overlap with detected geohash ranges to avoid duplicate rendering
     fun rangesOverlap(a: IntRange, b: IntRange): Boolean {
         return a.first < b.last && a.last > b.first
@@ -608,6 +617,20 @@ private fun appendIOSFormattedContent(
                     builder.addStringAnnotation(
                         tag = "url_click",
                         annotation = matchText,
+                        start = start,
+                        end = end
+                    )
+                    builder.pop()
+                } else if (type.startsWith("location:")) {
+                    // Style location coordinates as a link and add click annotation with lat,lon
+                    val coords = type.removePrefix("location:")
+                    builder.pushStyle(linkStyle)
+                    val start = builder.length
+                    builder.append(matchText)
+                    val end = builder.length
+                    builder.addStringAnnotation(
+                        tag = "location_click",
+                        annotation = coords,
                         start = start,
                         end = end
                     )
