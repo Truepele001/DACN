@@ -686,6 +686,25 @@ fun MessageInput(
                                     elapsedMs = 0L
                                 }
                             )
+
+                            AnimatedVisibility(
+                                visible = !isRecording,
+                                enter = fadeIn(tween(BitchatMotion.STANDARD_MS)) +
+                                    expandHorizontally(
+                                        tween(BitchatMotion.STANDARD_MS, easing = FastOutSlowInEasing)
+                                    ),
+                                exit = fadeOut(tween(BitchatMotion.QUICK_MS)) +
+                                    shrinkHorizontally(
+                                        tween(BitchatMotion.QUICK_MS, easing = FastOutSlowInEasing)
+                                    )
+                            ) {
+                                com.bitchat.android.ui.media.LocationPickerButton(
+                                    onLocationReady = { locText ->
+                                        onValueChange(androidx.compose.ui.text.input.TextFieldValue(locText))
+                                        onSend()
+                                    }
+                                )
+                            }
                         } else {
                             // No media in this context, so keep an inert send button rather than
                             // leaving a hole where the action cluster should be.

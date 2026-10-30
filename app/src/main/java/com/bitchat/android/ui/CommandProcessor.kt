@@ -25,6 +25,7 @@ class CommandProcessor(
         CommandSuggestion("/clear", emptyList(), null, "clear chat messages"),
         CommandSuggestion("/hug", emptyList(), "<nickname>", "send someone a warm hug"),
         CommandSuggestion("/j", listOf("/join"), "<channel>", "join or create a channel"),
+        CommandSuggestion("/location", listOf("/sharelocation", "/geo"), null, "share your location/geohash in chat"),
         CommandSuggestion("/m", listOf("/msg"), "<nickname> [message]", "send private message"),
         CommandSuggestion("/pay", emptyList(), "<token> [public]", "send a Cashu ecash token"),
         CommandSuggestion("/slap", emptyList(), "<nickname>", "slap someone with a trout"),
@@ -51,6 +52,7 @@ class CommandProcessor(
             "/hug" -> handleActionCommand(parts, "gives", "a warm hug 🫂", meshService, myPeerID, onSendMessage, viewModel)
             "/slap" -> handleActionCommand(parts, "slaps", "around a bit with a large trout 🐟", meshService, myPeerID, onSendMessage, viewModel)
             "/channels" -> handleChannelsCommand()
+            "/location", "/sharelocation", "/geo" -> handleLocationCommand(onSendMessage, viewModel)
             else -> handleUnknownCommand(cmd)
         }
         
@@ -206,6 +208,19 @@ class CommandProcessor(
             else -> {
                 // Clear main messages
                 messageManager.clearMessages()
+            }
+        }
+    }
+
+    private fun handleLocationCommand(onSendMessage: (String, List<String>, String?) -> Unit, viewModel: ChatViewModel?) {
+        val context = viewModel?.getApplication<android.app.Application>() ?: return
+        com.bitchat.android.dacn.location.DACNLocationManager.getCurrentLocation(context) { payload ->
+            if (payload != null) {
+                val locMsg = "📍 Shared Location: Geohash ${payload.geohash} (Lat: ${"%.4f".format(payload.latitude)}, Lon: ${"%.4f".format(payload.longitude)})"
+                onSendMessage(locMsg, emptyList(), null)
+            } else {
+                val locMsg = "📍 Shared Location: Geohash active"
+                onSendMessage(locMsg, emptyList(), null)
             }
         }
     }
