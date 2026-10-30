@@ -1,6 +1,6 @@
 <img width="256" height="256" alt="icon_128x128@2x" src="https://github.com/user-attachments/assets/90133f83-b4f6-41c6-aab9-25d0859d2a47" />
 
-## bitchat for Android
+### bitchat for Android
 
 A decentralized peer-to-peer messaging app with dual transport architecture: local Bluetooth mesh networks for offline communication and internet-based Nostr protocol for global reach. No accounts, no phone numbers, no central servers.
 
@@ -12,7 +12,7 @@ This is the Android implementation of bitchat, fully protocol-compatible with th
 
 [<img alt="Get it on Google Play" height="60" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>](https://play.google.com/store/apps/details?id=com.bitchat.droid)
 
-## See it in action
+### See it in action
 
 <table>
   <tr>
@@ -29,7 +29,7 @@ This is the Android implementation of bitchat, fully protocol-compatible with th
 
 This project is released into the public domain. See the [LICENSE](LICENSE.md) file for details.
 
-## Features
+### Features
 
 - **Dual Transport Architecture**: Bluetooth LE mesh for offline messaging, Nostr relays for internet-based messaging
 - **Location-Based Channels**: Geographic chat rooms using geohash coordinates over Nostr relays
