@@ -29,12 +29,17 @@ object LanguagePreferenceManager {
     ): List<AppLanguage> = readLanguageTags(context, localeConfig)
         .map { languageTag ->
             val locale = Locale.forLanguageTag(languageTag)
-            AppLanguage(
-                languageTag = languageTag,
-                endonym = locale.getDisplayName(locale)
+            val name = when (languageTag.lowercase()) {
+                "sw", "sw-ke", "sw-tz" -> "Kiswahili"
+                "en" -> "English"
+                else -> locale.getDisplayName(locale)
                     .replaceFirstChar { first ->
                         if (first.isLowerCase()) first.titlecase(locale) else first.toString()
-                    },
+                    }
+            }
+            AppLanguage(
+                languageTag = languageTag,
+                endonym = name,
             )
         }
         .sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.endonym })
