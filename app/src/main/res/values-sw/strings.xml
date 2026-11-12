@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cashu_pay_via">lipa kupitia Cashu</string>
+    <string name="cashu_payment_description">Malipo ya Cashu</string>
+    <string name="cashu_copy_token">Nakili ishara</string>
+    <string name="cashu_redeem_wallet">Komboa kwenye mkoba</string>
+    <string name="cashu_redeem_web">Komboa mtandaoni</string>
+    <string name="app_name">DACN</string>
+    <string name="permission_bluetooth_rationale">Ruhusa ya Bluetooth inahitajika kutuma ujumbe bila mtandao wa intaneti.</string>
+    <string name="permission_location_rationale">Ruhusa ya eneo inahitajika kugundua vifaa vilivyo karibu kupitia Bluetooth.</string>
+    <string name="permission_notification_rationale">Ruhusa ya arifa inahitajika kukujulisha kuhusu ujumbe mpya.</string>
+    <string name="nickname_hint">Jina la Utani</string>
+    <string name="message_hint">Andika ujumbe…</string>
+    <string name="channel_password_hint">Nywila</string>
+    <string name="join_channel">Jiunge na Chaneli</string>
+    <string name="leave_channel">Ondoka</string>
+    <string name="send_message">Tuma</string>
+    <string name="show_commands">Onyesha amri</string>
+    <string name="back">Rudi</string>
+    <string name="people">Watu</string>
+    <string name="channels">Chaneli</string>
+    <string name="online_users">Watumiaji Mkondoni</string>
+    <string name="no_one_connected">Hakuna aliyebandikwa</string>
+    <string name="emergency_clear_hint">Gusa mara tatu kufuta data yote</string>
+    <string name="your_network">Mtandao Wako</string>
+
+    <!-- Battery Optimization Strings -->
+    <string name="battery_optimization_detected">Uboreshaji wa Betri Umegunduliwa</string>
+    <string name="battery_optimization_disabled">Uboreshaji wa Betri Umezimwa</string>
+    <string name="battery_optimization_not_required">Uboreshaji wa Betri Hauhitajiki</string>
+    <string name="battery_optimization_checking">Inakagua Uboreshaji wa Betri</string>
+    <string name="battery_optimization_why_disable">Kwasababu gani uzime uboreshaji wa betri?</string>
+    <string name="battery_optimization_explanation">DACN inafanya kazi nyuma kudumisha muunganisho wa mtandao wa mesh na vifaa vilivyo karibu. Uboreshaji wa betri unaweza kukatiza miunganisho hii.\n\nKuzima uboreshaji wa betri kunahakikisha utumaji wa ujumbe wa kuaminika.</string>
+    <string name="battery_optimization_disable_button">Zima Uboreshaji wa Betri</string>
+    <string name="battery_optimization_note">Kumbuka: Waweza kubadilisha mpangilio huu baadaye katika Mipangilio ya Android > Programu > DACN > Betri</string>
+    <string name="battery_optimization_not_supported_explanation">Kifaa chako hakihitaji mipangilio ya uboreshaji wa betri. DACN itafanya kazi kawaida.</string>
+    <string name="battery_optimization_not_supported_message">Kifaa chako hakihitaji mipangilio ya uboreshaji wa betri. DACN itafanya kazi kawaida.</string>
+    <string name="battery_optimization_success_message">DACN inaweza kufanya kazi kwa kuaminika nyuma</string>
+    <string name="battery_optimization_benefits">• Inahakikisha uwasilishaji wa ujumbe kwa kuaminika\n• Inadumisha muunganisho wa mtandao wa mesh\n• Inaruhusu uwasilishaji wa ujumbe nyuma\n• Inazuia kukatika kwa muunganisho</string>
+    <string name="battery_optimization_check_again">Kagua Tena</string>
+    <string name="battery_optimization_skip">Ruka kwa Sasa</string>
+    <string name="battery_optimization_continue">Endelea</string>
+    <string name="retry">Majaribio Tena</string>
+    <string name="skip">Ruka</string>
+
+    <!-- Notifications -->
+    <string name="notification_summary_more">na %1$d zaidi</string>
+    <string name="notification_messages_from_people">Ujumbe %1$d kutoka kwa watu %2$d</string>
+    <string name="notification_more_conversations">na mazungumzo %1$d zaidi</string>
+    <string name="notification_active_peers_title">Watumiaji wa DACN karibu!</string>
+    <string name="notification_active_peers_one">Mtu 1 yuko karibu</string>
+    <string name="notification_active_peers_many">Watu %1$d wako karibu</string>
+    <string name="notification_new_messages">Ujumbe Mpya</string>
+    <string name="notification_new_location_messages">Ujumbe Mpya wa Eneo</string>
+    <string name="notification_mentions_in">Umetajwa katika %1$s</string>
+    <string name="notification_private_message">Ujumbe mpya wa siri</string>
+    <string name="notification_content_hidden">Fungua DACN ili kuutazama</string>
+
+    <!-- APK Sharing -->
+    <string name="share_bitchat_title">Shiriki DACN</string>
+    <string name="share_bitchat_subtitle">Shiriki faili la usakinishaji bila mtandao</string>
+    <string name="share_apk_title">Shiriki Programu ya DACN</string>
+    <string name="share_apk_explanation">Hii itashiriki faili la usakinishaji la DACN ili wengine waweze kusakinisha programu bila mtandao wa intaneti.</string>
+    <string name="share_apk_confirm">Shiriki Programu</string>
+
+    <!-- Onboarding / Permissions -->
+    <string name="location_explanation">DACN HAIUFUATILII eneo lako.\n\nHuduma za eneo zinahitajika na Android kwa ajili ya kutafuta Bluetooth na kusaidia vipengele vya chati ya Geohash.</string>
+    <string name="location_needs_for">DACN inahitaji huduma za eneo kwa:</string>
+    <string name="bluetooth_needs_for">DACN inahitaji Bluetooth kwa:</string>
+    <string name="location_tracking_warning">DACN HAIUFUATILII eneo lako</string>
+
+    <!-- Permission descriptions -->
+    <string name="perm_nearby_devices_desc">Inahitajika kugundua watumiaji wa DACN kupitia Bluetooth</string>
+    <string name="perm_nearby_devices_system">Ruhusu DACN kuungana na vifaa vilivyo karibu</string>
+    <string name="perm_location_desc">Inahitajika na Android kugundua watumiaji wa DACN walio karibu kupitia Bluetooth</string>
+    <string name="perm_location_system">DACN inahitaji hii ili kutafuta vifaa vilivyo karibu</string>
+    <string name="perm_notifications_desc">Pokea arifa unapopokea ujumbe wa siri</string>
+    <string name="perm_notifications_system">Ruhusu DACN kukutumia arifa</string>
+    <string name="perm_battery_desc">Zima uboreshaji wa betri ili kuhakikisha DACN inafanya kazi kwa kuaminika nyuma</string>
+    <string name="perm_battery_system">Ruhusu DACN kufanya kazi bila vizuizi vya betri</string>
+</resources>
