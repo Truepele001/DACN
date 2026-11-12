@@ -1,105 +1,78 @@
-<img width="256" height="256" alt="icon_128x128@2x" src="https://github.com/user-attachments/assets/90133f83-b4f6-41c6-aab9-25d0859d2a47" />
+# DACN — Decentralised Autonomous Communication Network
 
-### bitchat for Android
+A secure, infrastructure-independent mobile client for offline peer-to-peer messaging, encrypted large file distribution, REST API telemetry, and compass radar navigation. DACN operates without cellular coverage, internet gateways, or centralized authentication servers.
 
-A decentralized peer-to-peer messaging app with dual transport architecture: local Bluetooth mesh networks for offline communication and internet-based Nostr protocol for global reach. No accounts, no phone numbers, no central servers.
+---
 
-This is the Android implementation of bitchat, fully protocol-compatible with the [iOS version](https://github.com/permissionlesstech/bitchat) for cross-platform mesh communication.
+## Technical Highlights & Key Features
 
-[bitchat.free](http://bitchat.free)
+### 1. Persistent Ed25519 Identity Module (`DACNIdentityManager`)
+- **Keypair Generation**: BouncyCastle Ed25519 keypair generated on first launch.
+- **Hardware Security**: Keys stored securely via `EncryptedSharedPreferences` (Android KeyStore master key + AES-256-GCM).
+- **Cryptographic Peer ID**: `peerID` derived as a SHA-256 hash of public key bytes (64-character lowercase hex string).
+- **Display Name**: User display name persisted across app restarts.
 
-[GitHub Releases](https://github.com/permissionlesstech/bitchat-android/releases)
+### 2. Encrypted File Transfer Engine (`DACNFileTransferManager`)
+- **File Capacity**: Supports files up to **5MB**.
+- **Key Exchange**: Asymmetric **X25519 ECDH** key agreement with ephemeral sender keypairs.
+- **Symmetric Encryption**: **AES-256-GCM** (12-byte IV + 128-bit authentication tag).
+- **BLE Mesh Fragmentation**: Fragments payloads into **512-byte BLE-compatible chunks**.
+- **Integrity Guarantee**: Receiver validates full-file **SHA-256 hash** before saving.
 
-[<img alt="Get it on Google Play" height="60" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"/>](https://play.google.com/store/apps/details?id=com.bitchat.droid)
+### 3. Local Web Dashboard REST API (`DACNDashboardServer`)
+- **Embedded Web Server**: Runs `NanoHTTPD` locally on port **8080**.
+- **`GET /api/identity`**: Exposes JSON payload containing `publicKey`, `peerID`, and `displayName`.
+- **`GET /api/mesh`**: Exposes JSON payload with connected peers, active transport status, hop counts, and delivery stats.
 
-### See it in action
+### 4. 100% Offline Map & Compass Radar Navigation (`DACNOfflineMapEngine`)
+- **Offline Math**: Calculates Haversine distance, initial bearing, and 8-point compass heading (N, NE, E, SE, S, SW, W, NW) offline without internet.
+- **Compose Radar UI**: Interactive concentric range rings, center beacon, and relative peer position.
+- **Offline Map App Launch**: Triggers `geo:` intents to launch pre-downloaded offline vector maps (**OsmAnd**, **Organic Maps**, **MAPS.ME**).
 
-<table>
-  <tr>
-    <th>Offline mesh conversation</th>
-    <th>Geohash globe picker</th>
-  </tr>
-  <tr>
-    <td><img src="docs/screenshots/readme-mesh-chat.png" alt="Active four-peer Bitchat mesh conversation with an image, voice messages, and text messages" width="360"/></td>
-    <td><img src="docs/screenshots/readme-geohash-globe.png" alt="Bitchat geohash location picker showing the whole Earth and geohash grid" width="360"/></td>
-  </tr>
-</table>
+### 5. Multilingual Localization (English & Swahili)
+- Full Swahili translations in `values-sw/strings.xml` and locale support in `locales_config.xml`.
 
-## License
+---
 
-This project is released into the public domain. See the [LICENSE](LICENSE.md) file for details.
+## Android Stack & Architecture
 
-### Features
+- **Language & UI**: Kotlin, Jetpack Compose (Material 3), MVVM Architecture
+- **Cryptography**: BouncyCastle (`bcprov-jdk18on`), AndroidX Security Crypto (`security-crypto`)
+- **BLE Transports**: `BluetoothMeshService`, `UnifiedMeshService`, `MeshForegroundService`
+- **Telemetry**: `NanoHTTPD` on port 8080
 
-- **Dual Transport Architecture**: Bluetooth LE mesh for offline messaging, Nostr relays for internet-based messaging
-- **Location-Based Channels**: Geographic chat rooms using geohash coordinates over Nostr relays
-- **Intelligent Message Routing**: Automatically chooses the best transport, with queuing and retry when a peer is unreachable
-- **End-to-End Encryption**: [Noise Protocol](https://noiseprotocol.org) (XX pattern, X25519 + ChaCha20-Poly1305) for private messages over the mesh
-- **Decentralized Mesh Network**: Automatic peer discovery and multi-hop relay over Bluetooth LE (max 7 hops)
-- **Wi-Fi Aware Transport**: Higher-bandwidth local mesh on supported devices
-- **Channel Chats**: Topic-based group messaging with optional password protection (Argon2id + AES-256-GCM)
-- **IRC-Style Commands**: Familiar `/join`, `/msg`, `/who` style interface
-- **Tor Support**: Built-in Tor (Arti) for private internet connectivity
-- **Emergency Wipe**: Triple-tap to instantly clear all data
-- **Cross-Platform**: Binary protocol compatible with bitchat on iOS and macOS
+---
 
-## Technical Architecture
+## Building & Installation
 
-### Bluetooth Mesh Network (Offline)
-
-- Direct peer-to-peer within Bluetooth range, multi-hop relay through nearby devices
-- Noise Protocol sessions with forward secrecy; peer identities derived from static keys
-- Compact binary packet format with fragmentation, TTL routing, and deduplication
-- Adaptive duty cycling and connection limits for battery efficiency
-- Foreground service keeps the mesh alive within Android background execution limits
-
-### Nostr Protocol (Internet)
-
-- Global reach via public relays, geohash-based location channels
-- Private messages fall back to Nostr for mutual favorites when the mesh is unavailable
-- Ephemeral keys per geohash area
-
-### Android Stack
-
-- Kotlin, Jetpack Compose (Material 3), MVVM
-- Coroutines and Flow for all networking and state
-- Core components: `MeshForegroundService` (persistent connectivity), `BluetoothMeshService` / `WifiAwareMeshService` (transports), `UnifiedMeshService` (transport selection), `NoiseSessionManager` (encryption sessions), `MessageRouter` (mesh/Nostr routing with outbox retry)
-
-## Building
-
-Requires Android Studio and the Android SDK (API 26+).
+Requires Android Studio with JDK 21 and Android SDK (API 26+).
 
 ```bash
-git clone https://github.com/permissionlesstech/bitchat-android.git
-cd bitchat-android
+git clone https://github.com/Truepele001/DACN.git
+cd DACN
 ./gradlew assembleDebug
 ```
 
-Install on a connected device:
+Install on connected Android device:
 
 ```bash
 adb install -r app/build/outputs/apk/debug/app-debug.apk
 ```
 
-The app requests Bluetooth, location (required for BLE scanning), and notification permissions at runtime.
-
-Release APKs and the Android App Bundle can be rebuilt byte-for-byte in the
-pinned Linux container. Maintainers should follow the
-[Android release guide](docs/maintainer-release-guide.md). See
-[Reproducible builds](docs/reproducible-builds.md) for the build trust model
-and public GitHub/Google Play verification procedures.
+---
 
 ## Testing
 
 ```bash
-# Unit tests
-./gradlew test
+# Run unit tests
+./gradlew testDebugUnitTest
 
-# Lint
-./gradlew lint
-
-# Instrumented tests (requires a device or emulator)
-./gradlew connectedAndroidTest
+# Lint check
+./gradlew lintDebug
 ```
 
-Note that BLE mesh behavior is difficult to emulate; protocol and session logic is covered by unit tests, while radio-level behavior needs real devices.
+---
+
+## License
+
+Released under GPL-3.0 License.
