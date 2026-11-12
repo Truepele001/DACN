@@ -290,8 +290,8 @@ open class EncryptionService(private val context: Context) {
         action: () -> Boolean
     ): Boolean = noiseService.withAuthenticatedSession(peerID, expectedSession, action)
     
-    /**
-     * Get current peer ID for a fingerprint (for peer ID rotation)
+    /***
+     * Get current peer ID for a fingerprint ((for peer ID rotation))
      */
     fun getCurrentPeerID(fingerprint: String): String? {
         return noiseService.getPeerID(fingerprint)

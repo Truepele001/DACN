@@ -43,7 +43,7 @@ class UniversalApkManager(
         private const val CACHE_DIR_NAME = "universal_apk"
         private const val METADATA_FILE_NAME = "universal_apk_info.json"
         private const val PROGRESS_FILE_NAME = "download_progress.json"
-        private const val APK_FILE_PREFIX = "bitchat-universal-"
+        private const val APK_FILE_PREFIX = "dacn-universal-"
         private const val TEMP_FILE_NAME = "download_temp.apk"
         private const val ROUTE_READY_TIMEOUT_MILLIS = 60_000L
 
@@ -906,7 +906,7 @@ class UniversalApkManager(
         try {
             cacheDir.listFiles()?.forEach { file ->
                 if (file != except &&
-                    file.name.startsWith(APK_FILE_PREFIX) &&
+                    (file.name.startsWith(APK_FILE_PREFIX) || file.name.startsWith("bitchat-universal-")) &&
                     file.name.endsWith(".apk")
                 ) {
                     file.delete()

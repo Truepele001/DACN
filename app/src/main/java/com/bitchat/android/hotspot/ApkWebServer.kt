@@ -43,7 +43,7 @@ class ApkWebServer(
         Log.d(TAG, "Request: ${session.method} $uri from ${session.remoteIpAddress}")
 
         return when {
-            uri == "/bitchat.apk" -> {
+            uri == "/dacn.apk" || uri == "/bitchat.apk" -> {
                 serveApk()
             }
             uri == "/favicon.ico" -> {
@@ -79,7 +79,7 @@ class ApkWebServer(
                 apkFile.length()
             )
 
-            response.addHeader("Content-Disposition", "attachment; filename=\"bitchat-${appVersion}.apk\"")
+            response.addHeader("Content-Disposition", "attachment; filename=\"dacn-${appVersion}.apk\"")
             response.addHeader("Accept-Ranges", "bytes")
 
             response
@@ -257,8 +257,8 @@ class ApkWebServer(
 <body>
     <div class="container">
         <div class="logo">🔒</div>
-        <h1>BitChat</h1>
-        <p class="subtitle">Secure Mesh Messaging</p>
+        <h1>DACN</h1>
+        <p class="subtitle">Decentralised Autonomous Communication Network</p>
 
         <div class="info-grid">
             <div class="info-box">
@@ -271,8 +271,8 @@ class ApkWebServer(
             </div>
         </div>
 
-        <a href="/bitchat.apk" class="download-button">
-            📥 Download BitChat
+        <a href="/dacn.apk" class="download-button">
+            📥 Download DACN
         </a>
 
         <div class="instructions">
@@ -288,7 +288,7 @@ class ApkWebServer(
 
         <div class="warning">
             <strong>⚠️ Note:</strong>
-            If you already have BitChat installed, you may need to uninstall it first before installing this version. Make sure to backup your data if needed.
+            If you already have DACN installed, you may need to uninstall it first before installing this version. Make sure to backup your data if needed.
         </div>
     </div>
 </body>
