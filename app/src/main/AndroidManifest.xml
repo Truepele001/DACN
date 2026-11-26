@@ -8,19 +8,19 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     
     <!-- Bluetooth permissions -->
-    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" />
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" />
+    <uses-permission android:name="android.permission.BLUETOOTH" android:maxSdkVersion="30" /> <!-- Required for advertising -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" android:maxSdkVersion="30" /> <!-- Required for advertising -->
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> <!-- Required for BLE operations -->
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" /> <!-- Required for BLE scanning -->
     
     <!-- Location permission required for BLE scanning -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Required for BLE scanning -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" /> <!-- Required for BLE scanning in background -->
     
     <!-- Notification permissions -->
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" /> <!-- Required for notifications -->
 
     <!-- Wi‑Fi / Wi‑Fi Aware permissions (also used for hotspot APK sharing) -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

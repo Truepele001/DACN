@@ -215,13 +215,9 @@ class CommandProcessor(
     private fun handleLocationCommand(onSendMessage: (String, List<String>, String?) -> Unit, viewModel: ChatViewModel?) {
         val context = viewModel?.getApplication<android.app.Application>() ?: return
         com.bitchat.android.dacn.location.DACNLocationManager.getCurrentLocation(context) { payload ->
-            if (payload != null) {
-                val locMsg = "📍 Shared Location: Geohash ${payload.geohash} (Lat: ${"%.4f".format(payload.latitude)}, Lon: ${"%.4f".format(payload.longitude)})"
-                onSendMessage(locMsg, emptyList(), null)
-            } else {
-                val locMsg = "📍 Shared Location: Geohash active"
-                onSendMessage(locMsg, emptyList(), null)
-            }
+            val loc = payload ?: com.bitchat.android.dacn.location.DACNLocationManager.buildFallbackPayload(context)
+            val locMsg = "📍 Lat: ${"%.4f".format(loc.latitude)}, Lon: ${"%.4f".format(loc.longitude)}"
+            onSendMessage(locMsg, emptyList(), null)
         }
     }
 

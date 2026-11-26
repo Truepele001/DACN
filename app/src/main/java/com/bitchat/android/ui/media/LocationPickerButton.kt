@@ -32,13 +32,9 @@ fun LocationPickerButton(
             indication = null,
             onClick = {
                 DACNLocationManager.getCurrentLocation(context, LocationPrecisionLevel.NEIGHBORHOOD) { payload ->
-                    if (payload != null) {
-                        val msg = "📍 Shared Location: Geohash ${payload.geohash} (Lat: ${"%.4f".format(payload.latitude)}, Lon: ${"%.4f".format(payload.longitude)})"
-                        onLocationReady(msg)
-                    } else {
-                        val msg = "📍 Shared Location: Geohash active"
-                        onLocationReady(msg)
-                    }
+                    val loc = payload ?: DACNLocationManager.buildFallbackPayload(context)
+                    val msg = "📍 Lat: ${"%.4f".format(loc.latitude)}, Lon: ${"%.4f".format(loc.longitude)}"
+                    onLocationReady(msg)
                 }
             }
         )

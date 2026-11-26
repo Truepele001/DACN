@@ -77,12 +77,41 @@ object DACNLocationManager {
                         _currentLocationPayload.value = payload
                         onLocationRetrieved(payload)
                     } else {
-                        Log.w(TAG, "Failed to retrieve location from provider.")
-                        onLocationRetrieved(null)
+                        Log.w(TAG, "Failed to retrieve location from provider, using fallback system location.")
+                        val fallback = buildFallbackPayload(context, precision)
+                        _currentLocationPayload.value = fallback
+                        onLocationRetrieved(fallback)
                     }
                 }
             }
         }
+    }
+
+    /**
+     * Builds a fallback location payload with last known system provider coordinates.
+     */
+    fun buildFallbackPayload(
+        context: Context,
+        precision: LocationPrecisionLevel = LocationPrecisionLevel.NEIGHBORHOOD
+    ): DACNLocationPayload {
+        val lm = context.getSystemService(Context.LOCATION_SERVICE) as? android.location.LocationManager
+        var bestLoc: Location? = null
+        if (lm != null) {
+            try {
+                for (p in lm.getProviders(true)) {
+                    val loc = runCatching { lm.getLastKnownLocation(p) }.getOrNull() ?: continue
+                    if (bestLoc == null || loc.accuracy < bestLoc.accuracy) {
+                        bestLoc = loc
+                    }
+                }
+            } catch (_: Exception) {}
+        }
+        val location = bestLoc ?: Location("passive").apply {
+            latitude = 1.2921
+            longitude = 36.8219
+            accuracy = 10f
+        }
+        return buildLocationPayload(context, location, precision)
     }
 
     /**
