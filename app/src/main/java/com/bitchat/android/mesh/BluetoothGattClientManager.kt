@@ -374,8 +374,10 @@ class BluetoothGattClientManager(
         val deviceAddress = device.address
         val scanRecord = result.scanRecord
         
-        // CRITICAL: Only process devices that have our service UUID
-        val hasOurService = scanRecord?.serviceUuids?.any { it.uuid == AppConstants.Mesh.Gatt.SERVICE_UUID } == true
+        // CRITICAL: Process devices that have our service UUID in serviceUuids or serviceData
+        val hasOurService = scanRecord?.serviceUuids?.any { it.uuid == AppConstants.Mesh.Gatt.SERVICE_UUID } == true ||
+                scanRecord?.getServiceData(ParcelUuid(AppConstants.Mesh.Gatt.SERVICE_UUID)) != null ||
+                scanRecord?.serviceData?.containsKey(ParcelUuid(AppConstants.Mesh.Gatt.SERVICE_UUID)) == true
         if (!hasOurService) {
             return
         }
@@ -500,26 +502,20 @@ class BluetoothGattClientManager(
             
             override fun onMtuChanged(gatt: BluetoothGatt, mtu: Int, status: Int) {
                 val deviceAddress = gatt.device.address
-
-                if (status == BluetoothGatt.GATT_SUCCESS) {
-                    // Now that MTU is set, connection is fully ready.
-                    val deviceConn = BluetoothConnectionTracker.DeviceConnection(
-                        device = gatt.device,
-                        gatt = gatt,
-                        rssi = rssi,
-                        isClient = true,
-                        peerID = peerID, // Store the peerID discovered during scan
-                        linkID = linkID
-                    )
-                    connectionTracker.addDeviceConnection(deviceAddress, deviceConn)
-                    
-                    // Start service discovery only AFTER MTU is set.
-                    gatt.discoverServices()
-                } else {
-                    Log.w(TAG, "MTU negotiation failed for $deviceAddress with status: $status. Disconnecting.")
-                    //connectionTracker.removePendingConnection(deviceAddress)
-                    gatt.disconnect()
+                if (status != BluetoothGatt.GATT_SUCCESS) {
+                    Log.w(TAG, "MTU negotiation returned status $status for $deviceAddress; proceeding with default MTU.")
                 }
+                
+                val deviceConn = BluetoothConnectionTracker.DeviceConnection(
+                    device = gatt.device,
+                    gatt = gatt,
+                    rssi = rssi,
+                    isClient = true,
+                    peerID = peerID,
+                    linkID = linkID
+                )
+                connectionTracker.addDeviceConnection(deviceAddress, deviceConn)
+                gatt.discoverServices()
             }
 
             override fun onServicesDiscovered(gatt: BluetoothGatt, status: Int) {                
