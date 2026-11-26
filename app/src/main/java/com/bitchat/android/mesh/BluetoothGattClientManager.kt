@@ -561,8 +561,20 @@ class BluetoothGattClientManager(
                 }
             }
             
+            @Suppress("DEPRECATION")
             override fun onCharacteristicChanged(gatt: BluetoothGatt, characteristic: BluetoothGattCharacteristic) {
-                val value = characteristic.value
+                handleIncomingValue(gatt, characteristic.value)
+            }
+
+            override fun onCharacteristicChanged(
+                gatt: BluetoothGatt,
+                characteristic: BluetoothGattCharacteristic,
+                value: ByteArray
+            ) {
+                handleIncomingValue(gatt, value)
+            }
+
+            private fun handleIncomingValue(gatt: BluetoothGatt, value: ByteArray) {
                 val packet = BitchatPacket.fromBinaryData(value)
                 if (packet != null) {
                     val peerID = packet.senderID.take(8).toByteArray().joinToString("") { "%02x".format(it) }
