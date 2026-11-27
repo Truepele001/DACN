@@ -6,8 +6,14 @@
     <files-path
         name="files"
         path="." />
-    <!-- For APK sharing - cache subdirectory -->
+    <!-- For APK sharing - cache subdirectories -->
+    <cache-path
+        name="universal_apk"
+        path="universal_apk/" />
     <cache-path
         name="apk_share"
         path="apk_share/" />
+    <external-path
+        name="external"
+        path="." />
 </paths>

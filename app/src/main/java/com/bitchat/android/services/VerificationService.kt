@@ -146,7 +146,7 @@ object VerificationService {
         val service = encryptionServiceRef?.get() ?: return null
         val qr = VerificationQR.fromUrlString(urlString) ?: return null
         val now = System.currentTimeMillis() / 1000L
-        if (now - qr.ts > maxAgeSeconds) return null
+        if (Math.abs(now - qr.ts) > maxOf(maxAgeSeconds, 86400L)) return null
 
         val sig = qr.sigHex.dataFromHexString() ?: return null
         val signKey = qr.signKeyHex.dataFromHexString() ?: return null
