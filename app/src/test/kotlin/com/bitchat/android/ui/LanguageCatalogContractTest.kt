@@ -10,11 +10,11 @@ class LanguageCatalogContractTest {
 
     @Test
     fun `locale config contains every shipped locale exactly once`() {
-        val shippedLanguageTags = resourcesDirectory
+        val shippedLanguageTags = (resourcesDirectory
             .listFiles()
             .orEmpty()
             .filter { it.isDirectory && it.name.startsWith("values-") }
-            .mapNotNull { directory -> directory.name.toLanguageTagOrNull() }
+            .mapNotNull { directory -> directory.name.toLanguageTagOrNull() } + "en")
             .toSet()
 
         val configuredLanguageTags = Regex("""android:name="([^"]+)"""")
