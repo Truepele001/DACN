@@ -27,7 +27,6 @@ class CommandProcessor(
         CommandSuggestion("/j", listOf("/join"), "<channel>", "join or create a channel"),
         CommandSuggestion("/location", listOf("/sharelocation", "/geo"), null, "share your location/geohash in chat"),
         CommandSuggestion("/m", listOf("/msg"), "<nickname> [message]", "send private message"),
-        CommandSuggestion("/pay", emptyList(), "<token> [public]", "send a Cashu ecash token"),
         CommandSuggestion("/slap", emptyList(), "<nickname>", "slap someone with a trout"),
         CommandSuggestion("/unblock", emptyList(), "<nickname>", "unblock a peer"),
         CommandSuggestion("/w", emptyList(), null, "see who's online")
@@ -43,7 +42,6 @@ class CommandProcessor(
         when (cmd) {
             "/j", "/join" -> handleJoinCommand(parts, myPeerID)
             "/m", "/msg" -> handleMessageCommand(parts, meshService, viewModel)
-            "/pay" -> handlePayCommand(command, meshService, myPeerID, onSendMessage, viewModel)
             "/w" -> handleWhoCommand(meshService, viewModel)
             "/clear" -> handleClearCommand()
             "/pass" -> handlePassCommand(parts, myPeerID)
@@ -377,69 +375,7 @@ class CommandProcessor(
         messageManager.addMessage(systemMessage)
     }
 
-    private fun handlePayCommand(
-        command: String,
-        meshService: MeshService,
-        myPeerID: String,
-        onSendMessage: (String, List<String>, String?) -> Unit,
-        viewModel: ChatViewModel?
-    ) {
-        val args = command.trim().split(Regex("\\s+")).drop(1)
-        if (args.isEmpty()) {
-            addSystemMessage("usage: /pay <cashu token> [public] — Cashu tokens are bearer instruments")
-            return
-        }
 
-        val publicConfirmed = args.lastOrNull()?.equals("public", ignoreCase = true) == true
-        val rawToken = if (publicConfirmed) args.dropLast(1).joinToString(" ") else args.joinToString(" ")
-        val token = CashuTokenDecoder.bareToken(rawToken)
-        val info = token?.let { CashuTokenDecoder.decode(it, strict = true) }
-        if (token == null || info == null) {
-            addSystemMessage("invalid cashu token — not sending it")
-            return
-        }
-
-        val selectedPeer = state.getSelectedPrivateChatPeerValue()
-        if (selectedPeer != null) {
-            privateChatManager.sendPrivateMessage(
-                token,
-                selectedPeer,
-                getPeerNickname(selectedPeer, meshService),
-                state.getNicknameValue(),
-                myPeerID
-            ) { content, peerID, recipientNickname, messageId ->
-                sendPrivateMessageVia(meshService, content, peerID, recipientNickname, messageId, viewModel)
-            }
-        } else {
-            if (!publicConfirmed) {
-                addSystemMessage(
-                    "Cashu tokens are bearer instruments. Anyone here can redeem this token. " +
-                        "Confirm with: /pay <token> public"
-                )
-                return
-            }
-            val isLocationChannel =
-                state.selectedLocationChannel.value is com.bitchat.android.geohash.ChannelID.Location
-            if (!isLocationChannel) {
-                val message = BitchatMessage(
-                    sender = state.getNicknameValue() ?: myPeerID,
-                    content = token,
-                    timestamp = Date(),
-                    isRelay = false,
-                    senderPeerID = myPeerID,
-                    channel = state.getCurrentChannelValue()
-                )
-                val channel = state.getCurrentChannelValue()
-                if (channel != null) channelManager.addChannelMessage(channel, message, myPeerID)
-                else messageManager.addMessage(message)
-            }
-            onSendMessage(token, emptyList(), state.getCurrentChannelValue())
-        }
-
-        addSystemMessage(
-            "sent ${info.displayAmount ?: "Cashu token"} — bearer token; first redeemer wins"
-        )
-    }
 
     private fun addSystemMessage(content: String) {
         val message = BitchatMessage(
@@ -524,12 +460,7 @@ class CommandProcessor(
             emptyList()
         }
         
-        val isPublicGeohash =
-            state.getSelectedPrivateChatPeerValue() == null &&
-                state.selectedLocationChannel.value is com.bitchat.android.geohash.ChannelID.Location
-        return (baseCommands + channelCommands).filterNot {
-            isPublicGeohash && it.command == "/pay"
-        }
+        return baseCommands + channelCommands
     }
     
     private fun filterCommands(commands: List<CommandSuggestion>, input: String): List<CommandSuggestion> {
